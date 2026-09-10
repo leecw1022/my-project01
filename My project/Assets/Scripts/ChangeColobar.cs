@@ -1,0 +1,39 @@
+using System.Collections;
+using UnityEngine;
+
+public class ChangeColobar : MonoBehaviour
+{
+    private SpriteRenderer[] renderers;
+    private float fadeTime = 0.4f;
+
+    private void Awake()
+    {
+        renderers = transform.GetComponentsInChildren<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(nameof(OnFadeLoop));
+    }
+    IEnumerator OnFadeLoop()
+
+    {
+        //yield return new WaitForSeconds(fadeTime);
+        var waitForSeconds = new WaitForSeconds(fadeTime);
+
+        while (true)
+        {
+        for(int i = 0; i < renderers.Length; i++)
+            {
+                StartCoroutine(FadeEfect.Fade(renderers[i], 1f, 0f, fadeTime));  
+            }
+            yield return waitForSeconds;
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                StartCoroutine(FadeEfect.Fade(renderers[i], 0f, 1f, fadeTime));
+            }
+            yield return waitForSeconds;
+        }
+    }
+}

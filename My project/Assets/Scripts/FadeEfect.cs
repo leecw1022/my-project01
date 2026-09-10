@@ -1,16 +1,27 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class FadeEfect : MonoBehaviour
+public static class FadeEfect
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static IEnumerator Fade(SpriteRenderer target, float start, float end, float fadeTime = 1f, UnityAction action = null)
     {
-        
-    }
+        if (target == null) yield break;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        float percent = 0f;
+
+        while(percent<1)
+        {
+            percent += Time.deltaTime / fadeTime;
+
+            Color color = target.color;
+            color.a = Mathf.Lerp(start, end, percent);
+            target.color = color;
+
+            yield return null;
+
+        }
+
+        action?.Invoke();
     }
 }
